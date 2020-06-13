@@ -16,15 +16,14 @@ height = 64
 velocity = 15
 left = False
 right = False
+jump = Flase
+jumpCount = 10
 
 clock = pygame.time.Clock()
 
 def redraw_window():
     win.fill((255,255,255))
-    if left == True:
-        win.blit(character,(x,y))
-    if right == True:
-        win.blit(character,(x,y))
+    pygame.draw.rect(win,(255,0,0),(x,y,width,height))
         
     pygame.display.update()
 
@@ -46,11 +45,19 @@ while run:
     else:
         right = False
         left = False
-
-    if keys_pressed[pygame.K_UP] and y > velocity:
-        y -= velocity
-    if keys_pressed[pygame.K_DOWN] and y < 500 - height - velocity:
-        y += velocity
-    redraw_window()
+    if not (jump):
+        if keys_pressed[pygame.K_UP] and y > velocity:
+            y -= velocity
+        if keys_pressed[pygame.K_DOWN] and y < 500 - height - velocity:
+            y += velocity
+        redraw_window()
+        if keys[pygame.K_SPACE]:
+            jump = True
+     else:
+        if jumpCount >= -10:
+            y -= jumpCount ** 2
+            jumpCount -= 1
+        else jump = False
+        jumpCount = 10
 
 pygame.quit()
